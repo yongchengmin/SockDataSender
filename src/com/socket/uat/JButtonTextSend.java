@@ -19,6 +19,8 @@ import javax.swing.WindowConstants;
 
 @SuppressWarnings("serial")
 public class JButtonTextSend extends JFrame{
+	final JTextField jTextField;
+	final JButton jb2;
 	public JButtonTextSend(){
 		URL url=JButtonTextSend.class.getResource("go.png");
 //		Icon icon=new ImageIcon(url);//实例化Icon对象
@@ -31,12 +33,11 @@ public class JButtonTextSend extends JFrame{
         //创建容器
         Container container=getContentPane();
         
-        final JTextField jTextFieldUser = new JTextField();
-		jTextFieldUser.setBounds(new Rectangle(200,50,200,50));
-		container.add(jTextFieldUser);
+        jTextField = new JTextField();
+        jTextField.setBounds(new Rectangle(200,50,200,50));
+        container.add(jTextField);
         
-        
-        final JButton jb2=new JButton("点击发送(10s)");//实例化一个没有文字与图片的按钮
+        jb2=new JButton("点击发送(10s)");//实例化一个没有文字与图片的按钮
         jb2.setMaximumSize(new Dimension(90,30));//设置按钮和图片的大小相同
         jb2.setIcon(image);//为按钮设置图标
         jb2.setHideActionText(true);
@@ -44,26 +45,22 @@ public class JButtonTextSend extends JFrame{
         jb2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	String mesg = jTextFieldUser.getText().trim();
+            	String mesg = jTextField.getText().trim();
             	if(mesg!=null && mesg.length()>0){
-            		DataSender.sendPort(mesg.trim());
-//            		System.out.println("=="+mesg.trim());
+            		actionPerformedTask(mesg.trim());
             	}
-				jTextFieldUser.setText(null);
-				
-				jb2.setEnabled(false);
-				Timer timer = new Timer();
-				timer.schedule(new TimerTask(){
-					@Override
-					public void run() {
-						jb2.setEnabled(true);
-						
-					}
-					}, 10*1000);
-				timer = null;
             }
         });
         container.add(jb2);//将按钮添加到容器中
+        
+        jTextField.addActionListener(new ActionListener(){
+        	public void actionPerformed(ActionEvent arg0){
+        		String mesg = jTextField.getText().trim();
+            	if(mesg!=null && mesg.length()>0){
+            		actionPerformedTask(mesg.trim());
+            	}
+        	}
+        });
         
         String sendPort = DataSender.getRfidTxt(DataSender.PORT);
 		String sendIp = DataSender.getRfidTxt(DataSender.IP);
@@ -74,6 +71,23 @@ public class JButtonTextSend extends JFrame{
         setIconImage(icon.getImage());  
         //设置窗口的关闭方式
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+	}
+	
+	private void actionPerformedTask(String mesg){
+		DataSender.sendPort(mesg.trim());
+//		System.out.println("=="+mesg.trim());
+		jTextField.setText(null);
+		jb2.setEnabled(false);
+		jTextField.setEnabled(false);
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask(){
+			@Override
+			public void run() {
+				jb2.setEnabled(true);
+				jTextField.setEnabled(true);
+			}
+			}, 10*1000);
+		timer = null;
 	}
 
 //	public static void main(String[] args) {
