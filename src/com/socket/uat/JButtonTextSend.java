@@ -21,7 +21,18 @@ import javax.swing.WindowConstants;
 public class JButtonTextSend extends JFrame{
 	final JTextField jTextField;
 	final JButton jb2;
+	long delay = 10;
 	public JButtonTextSend(){
+		String sleep = DataSender.getRfidTxt(DataSender.SLEEP);
+        if(sleep==null){
+        	sleep = "10";
+        }
+        try {
+        	delay = Long.parseLong(sleep);
+		} catch (Exception e) {
+			delay = 10;
+		}
+		
 		URL url=JButtonTextSend.class.getResource("go.png");
 //		Icon icon=new ImageIcon(url);//实例化Icon对象
 		int width = 500,height = 500;
@@ -37,11 +48,11 @@ public class JButtonTextSend extends JFrame{
         jTextField.setBounds(new Rectangle(200,50,200,50));
         container.add(jTextField);
         
-        jb2=new JButton("点击发送(10s)");//实例化一个没有文字与图片的按钮
+        jb2=new JButton("点击发送("+delay+"s)");//实例化一个没有文字与图片的按钮
         jb2.setMaximumSize(new Dimension(90,30));//设置按钮和图片的大小相同
         jb2.setIcon(image);//为按钮设置图标
         jb2.setHideActionText(true);
-        jb2.setToolTipText("点我一次,10s后才可以点哦");//设置按钮提示为文字
+        jb2.setToolTipText("点我一次,"+delay+"s后才可以点哦");//设置按钮提示为文字
         jb2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -61,7 +72,6 @@ public class JButtonTextSend extends JFrame{
             	}
         	}
         });
-        
         String sendPort = DataSender.getRfidTxt(DataSender.PORT);
 		String sendIp = DataSender.getRfidTxt(DataSender.IP);
         setTitle("发送模拟器("+sendIp+":"+sendPort+")");//设置窗口标题
@@ -86,7 +96,7 @@ public class JButtonTextSend extends JFrame{
 				jb2.setEnabled(true);
 				jTextField.setEnabled(true);
 			}
-			}, 10*1000);
+			}, delay*1000);
 		timer = null;
 	}
 

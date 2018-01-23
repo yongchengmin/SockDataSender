@@ -21,7 +21,6 @@ public class DataSender {
 	 */
 //	public static void main(String[] args) throws UnknownHostException, IOException {
 //		Socket socket = new Socket("127.0.0.1",8898);
-//		//向服务器端程序发送数据
 //		OutputStream outputStream = socket.getOutputStream();
 //		OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
 //		BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
@@ -33,7 +32,6 @@ public class DataSender {
 //	}
 	private static void send(String ip,int port,String mesg) throws UnknownHostException, IOException{
 		Socket socket = new Socket(ip,port);
-		//向服务器端程序发送数据
 		OutputStream outputStream = socket.getOutputStream();
 		OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
 		BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
@@ -44,6 +42,7 @@ public class DataSender {
 	}
 	public final static String PORT = "port";
 	public final static String IP = "ip";
+	public final static String SLEEP = "sleep";
 	public static void sendPort(String mesg){
 		String sendPort = getRfidTxt(PORT);
 		String sendIp = getRfidTxt(IP);
