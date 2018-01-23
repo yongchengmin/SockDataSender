@@ -30,10 +30,11 @@ public class DataSender {
 //		socket.close();
 //		System.out.println("finish send data!!");
 //	}
+	public static String charsetName = "UTF-8";
 	private static void send(String ip,int port,String mesg) throws UnknownHostException, IOException{
 		Socket socket = new Socket(ip,port);
 		OutputStream outputStream = socket.getOutputStream();
-		OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
+		OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream,charsetName);
 		BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
 		bufferedWriter.write(mesg);
 		bufferedWriter.flush();
